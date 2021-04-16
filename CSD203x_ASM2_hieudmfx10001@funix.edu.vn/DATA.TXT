@@ -1,0 +1,9 @@
+ID | Title | Quantity | price
+P01 | Miliket | 10 | 5.2
+P02 | Apple | 5 | 4.3
+P07 | Beer | 11 | 12.2
+P04 | Book | 9 | 5.2
+P06 | Rice | 10 | 3 
+P10 | abc | 10 | 12.0
+P14 | tyue | 12 | 12.0
+P16 | uio | 87 | 12.0
