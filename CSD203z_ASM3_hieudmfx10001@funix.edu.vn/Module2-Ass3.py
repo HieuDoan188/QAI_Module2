@@ -14,7 +14,7 @@ Hãy viết chương trình gồm các chức năng sau:
 
 # link tham khảo cây: https://codelearn.io/sharing/5-phut-thong-thao-binary-search-tree
 """
-# định nghĩa lớp cho node 
+# định nghĩa lớp cho node cây nhị phân
 class Node:
 
   def __init__(self, data):
@@ -54,33 +54,32 @@ class Node:
       # TH ID == root, chia lam 2 TH con:
       #   + Duoi node can xoa co 1 node con (Trai hoac phai)
       #   + Duoi node can xoa co 2 node con
-      if ID_delete == self.data:     
-          if self.left == None:                           # Nếu ptu chỉ có 1 node con, thì thay vị trí node con vs node cần xóa là root.right 
-              self.data = self.right                           
+      if int(ID_delete) == int(self.data.split()[0]):     
+          if self.left == None and self.right == None:    # TH node can xoa ko co node con
+              self.data = None
+          elif self.left == None:                           # Nếu ptu chỉ có 1 node con, thì thay vị trí node con vs node cần xóa là root.right 
+              self.data = self.right      
+              # self.right = None                   
           elif self.right == None:                        
               self.data = self.left
+              # self.left = None 
           else:
               temp = self.right.minvalue()                                  # Trường hợp node muốn xóa có 2 node con
               self.data = temp.data
-              # Tim ptu nho nhat cua right subtree - để thay lên ptu muốn xóa
-              # Đệ quy xóa node thay thế trong cây đi, vì ta đã lấy node này thay lên node xóa chính
-              self.right.delete(temp.data)             
-
-      elif ID_delete < self.data:                       # Trường hợp ID cần xóa nhỏ hơn ptu node so sánh thì đệ quy cho phần bên trái of node
+   # Tim ptu nho nhat cua right subtree - để thay lên ptu muốn xóa
+              self.right.delete(temp.data)                                # Đệ quy xóa node thay thế trong cây đi, vì ta đã lấy node này thay lên node xóa chính
+      elif int(ID_delete) < int(self.data.split()[0]):                    # Trường hợp ID cần xóa nhỏ hơn ptu node so sánh thì đệ quy cho phần bên trái of node
           self.left.delete(ID_delete)
-
-      else:                                               # Trường hợp ID cần xóa nhỏ hơn ptu node so sánh thì đệ quy cho phần bên trái of node
+      else:                                                               # Trường hợp ID cần xóa nhỏ hơn ptu node so sánh thì đệ quy cho phần bên trái of node
           self.right.delete(ID_delete)          
 
-      
   # in cây nhị phân ra màn hình   
   def PrintTree(self):                  
       if self.left:
           self.left.PrintTree()
-      print("\n" + self.data)
+      print(self.data)
       if self.right:
           self.right.PrintTree()
-
 
   # Duyệt cây nhị phân với Inorder traversal 
   # Duyệt các nút trái -> root -> các nút phải
@@ -111,16 +110,28 @@ class Node:
         print("Không tìm thấy ID bạn nhập! ")
 
   """
-  Breadth-First Traversal traverse
+  Breadth-First Traversal traverse - tham khảo
   https://vimentor.com/vi/lesson/duyet-cay-theo-chieu-rong-1
   """
-  def Breadth_First(self):
-    queue = []      # tạo hàng đợi để lưu node
-    print(queue)
-    pass
-
-
-
+  def Breadth_first_search(self, root):
+    visited = []                      # Tạo list hàng đợi để lưu trữ ptu
+    if root:                          # root != None => thêm root vào đầu hàng đợi
+        visited.append(root)          # Đầu tiên duyệt node gốc (mức 0) và in ra dữ liệu của node
+        print(root.data)                      # in ptu dau tien
+    current = root
+    while current:
+        if current.left:
+            print(current.left.data)
+            visited.append(current.left.data)
+        if current.right:
+            print(current.right.data)
+            visited.append(current.right.data)
+        visited.pop(0)
+        if not visited:
+            break
+        current = visited[0]
+    
+# -----------------------------------------------------
 def menu():
   menu = """
           +-------------------Menu------------------+\n
@@ -191,12 +202,16 @@ def main():
       tree.insert(value_new_str)
       print("cây sau khi được thêm phần tử")
       print("ID | Name | Day of Birth | Birthplace\n")
-      tree.PrintTree()                       # in ra cây mới được insert
+      lst_print = tree.Inorder(tree)                                        # in ra cây mới được insert
+      f_1 = open("DATA_OUT.TXT", "w")
+      f_1.write("ID | Name | Day of Birth | Birthplace\n")
+      for j in lst_print:
+        print(j)
+        f_1.write(j)
     else:
       print("ID bạn nhập đã tồn tại!")
 
     # Lưu cây nhị phân tìm kiếm mới vào file ???
-
 
   elif n == 3:
     print("Choice 3: Inorder traverse")
@@ -217,8 +232,14 @@ def main():
   # Duyệt cây nhị phân với Breadth-First Traversal
   elif n == 4:
     print("Choice 4: Breadth-First Traversal")
-
-
+    f = open("DATA3.TXT", "r")
+    lst = f.readlines()
+    value = lst[1:]                      
+    tree = Node(value[0])                  
+    for i in range(1, len(value)):
+        tree.insert(value[i])
+    tree.Breadth_first_search(tree)
+    
 
   # Tìm thông tin ptu trong cây nhị phân bởi ID
   elif n == 5:

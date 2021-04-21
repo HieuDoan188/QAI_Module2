@@ -35,32 +35,31 @@ hãy xuất index của dấu mở ngoặc đầu tiên không khớp (bắt đ�
 
 # Python3 code to Check for 
 # balanced parentheses in an expression
-def check(expression):
+def check(string):
       
     open_tup = tuple('({[')
     close_tup = tuple(')}]')
-    map = dict(zip(open_tup, close_tup))
-    queue = []
-  
-    for i in expression:
+    map = dict(zip(open_tup, close_tup))        # tạo ra 1 dict các tuple của cặp ngoặc {'(': ')', '{': '}', '[': ']'}
+    lst_map = []
+    for i in string:
         if i in open_tup:
-            queue.append(map[i])
+            print(map[i])
+            lst_map.append(map[i])                # Quét các ptu trong chuỗi xem có trong kí tự mở ko, nếu có thì add ptu đóng của nó vào hàng chờ
+            print(lst_map)
         elif i in close_tup:
-            if not queue or i != queue.pop():
-                return "Unbalanced"
-    if not queue:
-        return "Balanced"
-    else:
-        return "Unbalanced"
+            if not lst_map or i != lst_map.pop():   # kiêm tra xem ptu đóng có trùng vs ptu map của ptu mở hay ko, nếu ko thì in ra index of ký tự
+                index = string.index(i)
+                string1 = "Chỉ số of ptu chưa khớp '" + i + "' là " + str(index)
+                return string1
+    # print(not queue)
+    if not lst_map:
+        return "Success"
   
 # Driver code
-string = "{[]{()}}"
+string = input("Nhập vào chuỗi cần kiểm tra: ")
 print(string, "-", check(string))
-  
-string = "((()"
-print(string,"-",check(string))
 
-# test
+# test  
 # Input:
 # {[]}()
 # Output:

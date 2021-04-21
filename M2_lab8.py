@@ -26,7 +26,7 @@ là index bắt đầu từ 0 của parent của đỉnh thứ 𝑖. Đảm bả
 + Định dạng output. Xuất ra chiều cao của cây.
 """
 class Node:
-    def __init__(self, data):
+    def __init__(self, data):                   # Định nghĩa cây
         self.data = data
         self.left = None
         self.right = None
@@ -49,13 +49,14 @@ class Node:
 def maxDepth(node):
     if node is None:
         return 0
- 
     else :
-        lDepth = maxDepth(node.left)
+        lDepth = maxDepth(node.left)                # Đệ quy 2 bên trái phải của cây để tìm chiều cao của cây
         rDepth = maxDepth(node.right)
+        print(lDepth)
+        print(rDepth)
         if (lDepth > rDepth):
             return lDepth+1
-        else:
+        else:                                       # Trường hợp lDepth <= rDepth
             return rDepth+1
 
 n = int(input("Nhap vao so nguyen n: "))

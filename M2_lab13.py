@@ -14,6 +14,9 @@ Nhiệm vụ. Cho một đồ thị vô hướng có n đỉnh, m cạnh và hai
 Định dạng output. Xuất ra số cạnh tối thiểu của đường đi từ u đến v, hoặc −1 nếu không có đường nào.
 """
 
+
+
+
 """
 Lab 13.2 - Kiểm tra xem một đồ thị có phải là lưỡng phân không
 Giới thiệu bài toán

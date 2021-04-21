@@ -73,11 +73,40 @@ class Node:
             Postorder_lst.append(root.data)
         return Postorder_lst
 
-lst = [8,10,4,7,6]
-root = Node(lst[0])
-for i in range(1, len(lst)):
-    root.insert(lst[i])
-    
-print(root.Inorder(root))
-print(root.Preorder(root))
-print(root.Postorder(root))
+
+n = int(input("Nhập vào số node: "))
+node = []
+left_right = []
+key = []
+
+for i in range(n):
+    value = input("Nhập vào giá trị: ")
+    value = [int(i) for i in value.split()]
+    node.append(value[0])
+    left_right.append(value[1])
+    key.append(value[2])
+
+root_node = Node(node[0])
+root_left_right = Node(left_right[0])
+root_key = Node(key[0])
+
+for i in range(1, n):
+    root_node.insert(node[i])
+    root_left_right.insert(left_right[i])
+    root_key.insert(key[i])
+
+print(root_node.Inorder(root_node))
+print(root_node.Preorder(root_node))
+print(root_node.Postorder(root_node))
+
+# Input:
+# 5
+# 4 1 2
+# 2 3 4
+# 5 -1 -1
+# 1 -1 -1
+# 3 -1 -1
+# Output:
+# 1 2 3 4 5
+# 4 2 1 3 5
+# 1 3 2 5 4

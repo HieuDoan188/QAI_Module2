@@ -35,18 +35,17 @@ class Node:
   
 # Định nghĩa lớp linkedlist  
 class LinkedList:
-    def __init__(self):                 # Hàm khởi tạo linked list
-        self.head = None                # giá trị đầu của linked list là null
+    def __init__(self):                                       # Hàm khởi tạo linked list
+        self.head = None                                      # giá trị đầu của linked list là null
 
     # load file vào linked list và thông báo ra màn hình
     def load_file(self, path):
         f = open(path, "r")
         lst = f.readlines()
-        lst_value = lst[1:]                         # chỉ lấy dữ liệu từ hàng thứ 2
+        lst_value = lst[1:]                                     # chỉ lấy dữ liệu từ hàng thứ 2
         for i in range(len(lst_value)):
             new_node_temp = Node(lst_value[i])
-            self.add_product(new_node_temp)         # Add từng data vào trong list
-
+            self.add_product(new_node_temp)                     # Add từng data vào trong list
 
     # Add thêm sản phẩm vào linked list
     def add_product(self, new_node):
@@ -54,10 +53,10 @@ class LinkedList:
             self.head = new_node             # Nếu linked list chưa có ptu nào thì add node vua tao là node dau tien được móc nối ns ptu None ở head
             return
         else:
-            last = self.head                # Nếu linked list đã có ptu rồi thì duyệt tìm ptu cuối cùng trong linked list
+            last = self.head                  # Nếu linked list đã có ptu rồi thì duyệt tìm ptu cuối cùng trong linked list
             while last.next != None:          # ptu cuối cùng khi last.next = None
                 last = last.next
-            last.next = new_node             # gán ptu newnode link vs ptu cuoi vưa tìm được
+            last.next = new_node              # gán ptu newnode link vs ptu cuoi vưa tìm được
 
     # Hiển thị ra giá trị trong linked list
     def Display_data(self):         
@@ -65,7 +64,6 @@ class LinkedList:
         while temp:                      # Duyệt và in từng ptu trong linked cho tới khi chạm tới null -> None
             print(temp.data)             # In ra dữ liệu của node đang đứng
             temp = temp.next             # đi tới node tiếp theo
-
 
     # Hàm tìm ID trong linked list
     def Search_ID(self, ID_search):
@@ -96,22 +94,21 @@ class LinkedList:
 
     # Hàm xóa ID tìm thấy trong linked list 
     def Deleted_ID(self, ID_delete):            
-        temp = self.head                             # gán ptu tạm thời là ptu đầu tiên của linked list
-        if temp is not None:             
-            if temp.data[:3] == ID_delete:           # nếu ptu đầu tiên = ID sẽ bị thay thế bằng phần tử kế tiếp
+        temp = self.head                                # gán ptu tạm thời là ptu đầu tiên của linked list
+        if temp:             
+            if temp.data[:3] == ID_delete:              # nếu ptu đầu tiên = ID sẽ bị thay thế bằng phần tử kế tiếp
                 self.head = temp.next
-                temp = None                          # gán temp = None để trả về vòng lặp
+                temp = None                             # gán temp = None để trả về vòng lặp                 
                 return
-        while temp is not None:                      # trong khi tìm ID cần delete đổi vị trí của ptu đã bị xóa
-            if temp.data[:3] == ID_delete:
+        while temp:                                     # trong khi tìm ID cần delete đổi vị trí của ptu đã bị xóa
+            if temp.data[:3] == ID_delete:            
                 break
-            prev = temp                     
+            prev = temp                                   
             temp = temp.next
-        if temp == None:                        # ko trả về gì cả nếu ID không có trong linked list 
+        if temp == None:                              
             return
-        prev.next = temp.next                   # Unlink the node from linked list
+        prev.next = temp.next                   
         temp = None
-
 
     # Hàm convert số lượng của ID được tìm thấy thành binary    
     def Convert(self, ID_cov):
@@ -129,22 +126,21 @@ class LinkedList:
     def getMiddle(self, head):
         if head == None:
             return head
-        slow = head
+        slow = head                                             # Gán vị trí 2 con tro tại vị trí đầu của linked list
         fast = head
-        while (fast.next != None and fast.next.next != None):
+        while (fast.next != None and fast.next.next != None):      # Gán cho con tro fast chay gap doi slow de tim vi tri cuoi cua linked -> vị tri giũa of linked list là slow
             slow = slow.next
             fast = fast.next.next
         return slow      
      
-    def sortedMerge(self, a, b):
+    def sortedMerge(self, a, b):            # Hàm merge 2 mảng a, b đã sắp xếp
         result = None
-        # Base cases
-        if a == None:
+        if a == None:                       # Nếu 2 mảng rỗng thì trả về rỗng
             return b
         if b == None:
             return a
-        if a.data <= b.data:
-            result = a
+        if a.data <= b.data:                    # Nếu ID của ptu a < ID mảng b thì tra kết quả về mảng a
+            result = a                                                   # tiếp tục đệ quy để gắn ptu tiếp theo vào mảng kết quả
             result.next = self.sortedMerge(a.next, b)
         else:
             result = b
@@ -152,18 +148,17 @@ class LinkedList:
         return result
 
     def mergeSort(self, h):
-        
-        if h == None or h.next == None:      # Base case if head is None
+        if h == None or h.next == None:                 
             return h
-        middle = self.getMiddle(h)          # Tìm ptu ở giữa lst
-        next_mid = middle.next              # set the next of middle node to None
+        middle = self.getMiddle(h)                      # Tìm ptu ở giữa lst
+        next_mid = middle.next                          # set the next of middle node to None
         middle.next = None
-        left = self.mergeSort(h)                     # Đệ quy merge sort cho list bên trái
-        right = self.mergeSort(next_mid)             # Đệ quy merge sort cho list bên phải
-        sortedlist = self.sortedMerge(left, right)          # Merge 2 list lại với nhau
+        left = self.mergeSort(h)                        # Đệ quy merge sort cho list bên trái
+        right = self.mergeSort(next_mid)                # Đệ quy merge sort cho list bên phải
+        sortedlist = self.sortedMerge(left, right)      # Merge 2 list lại với nhau
         return sortedlist
     # --------------------END merge sort --------------------------------
-
+    
 # Hàm đệ quy convert decima sang nhị phân 
 def conv(n):
     if n > 1:
@@ -293,7 +288,11 @@ def main():
         mylinkedlist.load_file("data.txt")
         print("Choice 7: Sorted by ID with merge sort in linked list ")
         mylinkedlist.mergeSort(mylinkedlist.head)
-        mylinkedlist.Display_data()
+        temp = mylinkedlist.head
+        while temp:                      # Duyệt và in từng ptu trong linked cho tới khi chạm tới null -> None
+            print(temp.data)             # In ra dữ liệu của node đang đứng
+            temp = temp.next 
+        # mylinkedlist.Display_data()
 
     # 8. Biểu diễn số lượng sản phẩm (đang ở hệ đếm cơ số 10) của phần tử đầu tiên trong Linked List về hệ đếm nhị phân bằng phương pháp đệ quy
     elif n == 8:

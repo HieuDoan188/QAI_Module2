@@ -1,9 +1,10 @@
 ID | Title | Quantity | price
-P01 | Miliket | 10 | 5.2
+P03 | Sugar | 12 | 25.1
 P02 | Apple | 5 | 4.3
+P05 | Rose | 7 | 15.4
 P07 | Beer | 11 | 12.2
 P04 | Book | 9 | 5.2
-P06 | Rice | 10 | 3 
-P10 | abc | 10 | 12.0
-P14 | tyue | 12 | 12.0
-P16 | uio | 87 | 12.0
+P06 | Rice | 10 | 3
+P08 | French fries | 5 | 3
+P09 | abc | 12 | 32.0
+P01 | Apple | 5 | 4.3

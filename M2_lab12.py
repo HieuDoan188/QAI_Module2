@@ -17,6 +17,19 @@ Nhiệm vụ. Cho một đồ thị vô hướng và hai đỉnh phân biệt �
 """
 
 
+
+# Input:
+# 4 4
+# 1 2
+# 3 2
+# 4 3
+# 1 4
+# 1 4
+# Output:
+# 1
+
+
+
 """
 Lab 12.2 - Thêm lối thoát cho mê cung
 Giới thiệu bài toán

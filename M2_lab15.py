@@ -13,3 +13,4 @@ Nhiệm vụ. Tìm tất cả các lần xuất hiện của một pattern trong
 + Định dạng output. Tất cả các vị trí 𝑃 𝑎𝑡𝑡𝑒𝑟𝑛 xuất hiện dưới dạng một substring trong 𝐺𝑒𝑛𝑜𝑚𝑒 (sử dụng index 
 bắt đầu từ 0 như bình thường).
 """
+

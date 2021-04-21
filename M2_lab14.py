@@ -15,6 +15,7 @@ hãy tính trọng số của đường đi ngắn nhất giữa u và v (nghĩa
 
 
 
+
 """
 Lab 14.2 - Phát hiện sự bất thường trong tỷ giá hối đoái
 Bạn được cho một list các đơn vị tiền tệ c1, c2 ,. . . , cn cùng với list tỷ giá hối đoái: rij là số đơn vị tiền tệ cj 

@@ -21,8 +21,79 @@ mỗi dòng chứa một truy vấn ở định dạng được mô tả ở tr�
 nếu không có người nào trong danh bạ có số điện thoại đó. Xuất ra một kết quả trên mỗi dòng theo thứ tự giống thứ tự các truy 
 vấn find trong input.
 """
+# python3
 
+class Query:
+    def __init__(self, query):
+        self.type = query[0]
+        self.number = int(query[1])
+        if self.type == 'add':
+            self.name = query[2]
 
+def read_queries():
+    n = int(input())
+    return [Query(input().split()) for i in range(n)]
+
+def write_responses(result):
+    print('\n'.join(result))
+
+def process_queries(queries):
+    result = []
+    # Keep list of all existing (i.e. not deleted yet) contacts.
+    contacts = []
+    contactsDA = [None for i in range(0, 10000000)]
+    for cur_query in queries:
+        if cur_query.type == 'add':
+##            # if we already have contact with such number,
+##            # we should rewrite contact's name
+##            for contact in contacts:
+##                if contact.number == cur_query.number:
+##                    contact.name = cur_query.name
+##                    break
+##            else: # otherwise, just add it
+##                contacts.append(cur_query)
+            contactsDA[cur_query.number] = cur_query
+        elif cur_query.type == 'del':
+##            for j in range(len(contacts)):
+##                if contacts[j].number == cur_query.number:
+##                    contacts.pop(j)
+##                    break
+            contactsDA[cur_query.number] = None
+        else:
+            response = 'not found'
+##            for contact in contacts:
+##                if contact.number == cur_query.number:
+##                    response = contact.name
+##                    break
+            if(contactsDA[cur_query.number] != None):
+                response = contactsDA[cur_query.number].name
+            result.append(response)
+    return result
+
+write_responses(process_queries(read_queries()))
+
+# Input
+# 12
+# add 911 police
+# add 76213 Mom
+# add 17239 Bob
+# find 76213
+# find 910
+# find 911
+# del 910
+# del 911
+# find 911
+# find 76213
+# add 76213 daddy
+# find 76213
+# Output:
+# 3
+# Mom
+# not found
+# police
+# not found
+# Mom
+# daddy
 
 
 """
@@ -50,7 +121,109 @@ số truy vấn 𝑁. Tiếp theo là 𝑁 dòng, mỗi dòng chứa một truy 
 + Định dạng output. In kết quả của từng truy vấn find và check, một kết quả trên một dòng theo thứ tự tương ứng như thứ tự 
 của các truy vấn này trong input.
 """
+class Query1:
 
+    def __init__(self, query):
+        self.type = query[0]
+        if self.type == 'check':
+            self.ind = int(query[1])
+        else:
+            self.s = query[1]
+
+
+class QueryProcessor:
+    _multiplier = 263
+    _prime = 1000000007
+
+    def __init__(self, bucket_count):
+        self.bucket_count = bucket_count
+        # store all strings in one list
+        self.elems = []
+        self.hashTable = [[]] * bucket_count
+
+    def _hash_func(self, s):
+        ans = 0
+        for c in reversed(s):
+            ans = (ans * self._multiplier + ord(c)) % self._prime
+        return ans % self.bucket_count
+
+    def write_search_result(self, was_found):
+        print('yes' if was_found else 'no')
+
+    def write_chain(self, chain):
+        print(' '.join(chain))
+
+    def read_query(self):
+        return Query1(input().split())
+
+    def process_query_naive(self, query):
+        if query.type == "check":
+            # use reverse order, because we append strings to the end
+            self.write_chain(cur for cur in reversed(self.elems)
+                        if self._hash_func(cur) == query.ind)
+        else:
+            try:
+                ind = self.elems.index(query.s)
+            except ValueError:
+                ind = -1
+            if query.type == 'find':
+                self.write_search_result(ind != -1)
+            elif query.type == 'add':
+                if ind == -1:
+                    self.elems.append(query.s)
+            else:
+                if ind != -1:
+                    self.elems.pop(ind)
+
+    def process_query(self, query):
+        if query.type == "check":
+            # use reverse order, because we append strings to the end
+            self.write_chain(cur for cur in reversed(self.hashTable[query.ind])
+                        if self._hash_func(cur) == query.ind)
+        else:
+            try:
+                ind = self.hashTable[self._hash_func(query.s)].index(query.s)
+            except ValueError:
+                ind = -1
+            if query.type == 'find':
+                self.write_search_result(ind != -1)
+            elif query.type == 'add':
+                if ind == -1:
+                    self.hashTable[self._hash_func(query.s)].append(query.s)
+            else:
+                if ind != -1:
+                    self.hashTable[self._hash_func(query.s)].pop(ind)
+
+    def process_queries(self):
+        n = int(input())
+        for i in range(n):
+            self.process_query(self.read_query())
+
+bucket_count = int(input())
+proc = QueryProcessor(bucket_count)
+proc.process_queries()
+
+# Input:
+# 5
+# 12
+# add world
+# add HellO
+# check 4
+# find World
+# find world
+# del world
+# check 4
+# del HellO
+# add luck
+# add GooD
+# check 2
+# del good
+# Output:
+# HellO world
+# no
+# yes
+# HellO
+# GooD luck
 
 """
 Lab 11.3 - Tìm pattern (mẫu string) trong văn bản
@@ -65,4 +238,58 @@ Nhiệm vụ. Trong bài toán này, mục tiêu của bạn là triển khai th
 + Định dạng output. In tất cả các vị trí xuất hiện của 𝑃 trong 𝑇 theo thứ tự tăng dần. Sử dụng index của các vị trí 
 trong văn bản 𝑇 bắt đầu từ 0.
 """
+import random
 
+def read_input():
+    return (input().rstrip(), input().rstrip())
+
+def print_occurrences(output):
+    print(' '.join(map(str, output)))
+
+def get_occurrences_naive(pattern, text):
+    return [
+        i 
+        for i in range(len(text) - len(pattern) + 1) 
+        if text[i:i + len(pattern)] == pattern
+    ]
+
+def poly_hash(s, prime, x):
+    ans = 0
+    for c in reversed(s):
+    	ans = (ans * x + ord(c)) % prime
+    return ans
+
+def precompute_hashes(text, plength, p, x):
+    H = [0] * (len(text) - plength + 1)
+    s = text[-plength:]
+    H[len(text)-plength] = poly_hash(s, p, x)
+    y = 1
+    for i in range(1, plength+1):
+        y = (y * x) % p
+    for i in reversed(range(len(text) - plength)):
+        prehash = x * H[i + 1] + ord(text[i]) - y * ord(text[i + plength])
+        while(prehash < 0):
+            prehash += p
+        H[i] = prehash % p
+    return H
+
+def get_occurrences(pattern, text):
+    p = 1000000007
+    x = random.randint(1, p)
+    # tlength = len(text) 
+    plength = len(pattern)
+    phash = poly_hash(pattern, p, x)
+    H = precompute_hashes(text, plength, p, x)
+    return [
+        i 
+        for i in range(len(text) - len(pattern) + 1) 
+        if phash == H[i] and text[i:i + len(pattern)] == pattern
+    ]
+
+print_occurrences(get_occurrences(*read_input()))
+
+# Input:
+# aba
+# abacaba
+# Output:
+# 0 4
